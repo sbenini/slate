@@ -1,20 +1,49 @@
-# Errors
+# Return Codes & Errors
 
-<aside class="notice">This error section is stored in a separate file in `includes/_errors.md`. Slate allows you to optionally separate out your docs into many files...just save them to the `includes` folder and add them to the top of your `index.md`'s frontmatter. Files are included in the order listed.</aside>
+YonderAPI returns codes that follow the HTTP standard.
 
-The Kittn API uses the following error codes:
+## Successfull requests
 
+When everything goes fine, YonderAPI returns HTTP codes of the type `2xx`:
 
 Error Code | Meaning
 ---------- | -------
-400 | Bad Request -- Your request sucks
-401 | Unauthorized -- Your API key is wrong
-403 | Forbidden -- The kitten requested is hidden for administrators only
-404 | Not Found -- The specified kitten could not be found
-405 | Method Not Allowed -- You tried to access a kitten with an invalid method
-406 | Not Acceptable -- You requested a format that isn't json
-410 | Gone -- The kitten requested has been removed from our servers
-418 | I'm a teapot
-429 | Too Many Requests -- You're requesting too many kittens! Slow down!
-500 | Internal Server Error -- We had a problem with our server. Try again later.
-503 | Service Unavailable -- We're temporarially offline for maintanance. Please try again later.
+200 | OK
+201 | CREATED
+202 | ACCEPTED
+204 | NO CONTENT
+
+## Client-side errors
+
+When something goes wrong on the request side, YonderAPI returns HTTP error codes of type `4xx`:
+
+Error Code | Meaning
+---------- | -------
+400 | BAD REQUEST (e.g. a required parameter is missing)
+401 | UNAUTHORIZED (e.g. wrong credentials)
+404 | NOT FOUND (e.g. misspelled resource)
+405 | METHOD NOT ALLOWED (e.g. `GET` is requested but only `POST` is available)
+
+Error messages are self-explanatory and clearly point where the problem is. 
+An example of `BAD REQUEST` response due to a missing parameter is provided aside:
+
+```
+{
+    "message": {
+        "text": "Missing required parameter in the JSON body or the post body or the query string"
+    }
+}
+```
+
+## Server-side errors
+
+When something goes wrong on the API side, YonderAPI returns HTTP error code `500 INTERNAL SERVER ERROR` with a message body such as the one provided aside:
+
+```
+{
+    "message": {
+        "error": "API processing error - Code 001."
+    }
+}
+```
+
